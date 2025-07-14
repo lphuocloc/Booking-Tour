@@ -5,7 +5,9 @@ exports.renderNew = async (req, res) => {
   const { tourId } = req.query;
   const tour = await Tour.findById(tourId);
   if (!tour) return res.status(404).send('Tour not found');
-  res.render('bookings/new', { tour, session: req.session });
+  // Lấy thông tin user từ session nếu có
+  const user = req.session.user || null;
+  res.render('bookings/new', { tour, session: req.session, user });
 };
 
 exports.createBooking = async (req, res) => {

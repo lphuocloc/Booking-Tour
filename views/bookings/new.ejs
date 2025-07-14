@@ -206,6 +206,19 @@
       cursor: pointer;
     }
 
+    /* Invalid feedback styles */
+    .invalid-feedback {
+      display: none;
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .form-control.is-invalid {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+    }
+
     @media (max-width: 768px) {
       .booking-container {
         margin: 2rem 1rem;
@@ -235,43 +248,53 @@
   </style>
 
   <div class="booking-container">
-    <h1 class="booking-title">Đặt tour: <%= tour.title %>
+    <h1 class="booking-title">Book Tour: <%= tour.title %>
     </h1>
     <form id="bookingForm" action="/bookings" method="POST" class="booking-form">
       <input type="hidden" name="tourId" value="<%= tour._id %>" />
       <div class="mb-3">
-        <label for="customerName" class="form-label">Họ tên</label>
-        <input type="text" class="form-control" id="customerName" name="customerName" required />
+        <label for="customerName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="customerName" name="customerName" required value="<%= user ? user.fullname : '' %>" />
       </div>
       <div class="mb-3">
         <label for="customerEmail" class="form-label">Email</label>
-        <input type="email" class="form-control" id="customerEmail" name="customerEmail" required />
+        <input type="email" class="form-control" id="customerEmail" name="customerEmail" required value="<%= user ? user.email : '' %>" />
       </div>
-      <!-- New terms and conditions checkbox -->
+      <div class="mb-3">
+        <label for="customerPhone" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="customerPhone" name="customerPhone" required value="<%= user ? user.phonenumber : '' %>" />
+      </div>
+      <div class="mb-3">
+        <label for="participants" class="form-label">Number of Participants</label>
+        <input type="number" class="form-control" id="participants" name="participants" min="1" required />
+        <div class="invalid-feedback" id="participantsError">Number of participants must be greater than 0.</div>
+      </div>
+      <div class="mb-3">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" required />
+        <div class="invalid-feedback" id="startDateError">Start date cannot be in the past.</div>
+      </div>
       <div class="checkbox-container">
         <input type="checkbox" id="termsCheckbox" name="termsAccepted" required />
-        <label for="termsCheckbox">Tôi đồng ý với thông tin trên và muốn tiếp tục</label>
+        <label for="termsCheckbox">I agree with the above information and want to continue</label>
       </div>
-      <!-- The button is now disabled by default and will be enabled by JS -->
-      <button type="button" id="confirmButton" class="btn btn-booking" disabled>Xác nhận đặt tour ($<%= tour.price %>
-          )</button>
+      <button type="button" id="confirmButton" class="btn btn-booking" disabled>Confirm Booking ($<%= tour.price %>)</button>
     </form>
   </div>
 
   <!-- Confirmation Modal -->
   <div id="confirmationModal" class="modal-overlay">
     <div class="modal-content">
-      <h2 class="modal-title">Xác nhận thông tin đặt tour</h2>
+      <h2 class="modal-title">Confirm your booking information</h2>
       <div class="modal-info">
         <p><strong>Tour:</strong> <span id="modalTourTitle"></span></p>
-        <p><strong>Họ tên:</strong> <span id="modalCustomerName"></span></p>
+        <p><strong>Full Name:</strong> <span id="modalCustomerName"></span></p>
         <p><strong>Email:</strong> <span id="modalCustomerEmail"></span></p>
-        <p><strong>Giá:</strong> $<%= tour.price %>
-        </p>
+        <p><strong>Price:</strong> $<%= tour.price %></p>
       </div>
       <div class="modal-actions">
-        <button type="button" id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Xác nhận</button>
-        <button type="button" id="modalCancelBtn" class="modal-btn modal-btn-cancel">Hủy</button>
+        <button type="button" id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Confirm</button>
+        <button type="button" id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
       </div>
     </div>
   </div>
@@ -290,62 +313,85 @@
         const modalCancelBtn = document.getElementById('modalCancelBtn');
         const customerNameInput = document.getElementById('customerName');
         const customerEmailInput = document.getElementById('customerEmail');
-        const termsCheckbox = document.getElementById('termsCheckbox'); // Get the new checkbox
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const participantsInput = document.getElementById('participants');
+        const startDateInput = document.getElementById('startDate');
+        const participantsError = document.getElementById('participantsError');
+        const startDateError = document.getElementById('startDateError');
 
-        // Function to update button disabled state based on checkbox
-        function updateButtonState() {
-          confirmButton.disabled = !termsCheckbox.checked;
+        // Hide error by default
+        participantsError.style.display = 'none';
+        startDateError.style.display = 'none';
+
+        // Validate participants > 0
+        function validateParticipants() {
+          if (parseInt(participantsInput.value) < 1) {
+            participantsInput.classList.add('is-invalid');
+            participantsError.style.display = 'block';
+            return false;
+          } else {
+            participantsInput.classList.remove('is-invalid');
+            participantsError.style.display = 'none';
+            return true;
+          }
         }
+        participantsInput.addEventListener('input', validateParticipants);
 
-        // Initial state of the button on page load
-        updateButtonState();
+        // Validate start date is not in the past
+        function validateStartDate() {
+          const today = new Date();
+          today.setHours(0,0,0,0);
+          const selected = new Date(startDateInput.value);
+          if (startDateInput.value && selected < today) {
+            startDateInput.classList.add('is-invalid');
+            startDateError.style.display = 'block';
+            return false;
+          } else {
+            startDateInput.classList.remove('is-invalid');
+            startDateError.style.display = 'none';
+            return true;
+          }
+        }
+        startDateInput.addEventListener('change', validateStartDate);
 
-        // Add event listener to the checkbox to update button state
+        // Function to update button disabled state based on checkbox and validation
+        function updateButtonState() {
+          confirmButton.disabled = !termsCheckbox.checked || !validateParticipants() || !validateStartDate();
+        }
         termsCheckbox.addEventListener('change', updateButtonState);
+        participantsInput.addEventListener('input', updateButtonState);
+        startDateInput.addEventListener('change', updateButtonState);
+        updateButtonState();
 
         // Function to show the modal
         function showModal() {
-          // Check form validity, including the new required checkbox
-          if (!bookingForm.checkValidity()) {
-            // If form is not valid, trigger native browser validation messages
+          if (!bookingForm.checkValidity() || !validateParticipants() || !validateStartDate()) {
             bookingForm.reportValidity();
+            validateParticipants();
+            validateStartDate();
             return;
           }
-
           modalTourTitle.textContent = "<%= tour.title %>";
           modalCustomerName.textContent = customerNameInput.value;
           modalCustomerEmail.textContent = customerEmailInput.value;
           confirmationModal.classList.add('show');
         }
-
-        // Function to hide the modal
-        function hideModal() {
-          confirmationModal.classList.remove('show');
-        }
-
-        // Event listener for the main confirmation button
         confirmButton.addEventListener('click', showModal);
-
-        // Event listener for the "Xác nhận" button inside the modal
         modalConfirmBtn.addEventListener('click', function () {
-          // Re-check validity just in case, though it should be valid if modal showed
-          if (bookingForm.checkValidity()) {
-            bookingForm.submit(); // Submit the form
-            hideModal(); // Hide modal after submission (though page will reload)
+          if (bookingForm.checkValidity() && validateParticipants() && validateStartDate()) {
+            bookingForm.submit();
+            confirmationModal.classList.remove('show');
           } else {
-            // This case should ideally not be hit if showModal checks validity
             bookingForm.reportValidity();
-            hideModal(); // Hide modal if invalid
+            confirmationModal.classList.remove('show');
           }
         });
-
-        // Event listener for the "Hủy" button inside the modal
-        modalCancelBtn.addEventListener('click', hideModal);
-
-        // Hide modal if clicking outside of it (optional)
+        modalCancelBtn.addEventListener('click', function () {
+          confirmationModal.classList.remove('show');
+        });
         confirmationModal.addEventListener('click', function (event) {
           if (event.target === confirmationModal) {
-            hideModal();
+            confirmationModal.classList.remove('show');
           }
         });
       });

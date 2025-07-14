@@ -1,11 +1,13 @@
 var express = require('express')
 const userController = require('../controllers/userController');
 const auth = require('../middleware/auth');
+const authController = require('../controllers/authController');
 var userRouter = express.Router();
 
 // userRouter.route('/')
 userRouter.post('/register', userController.registerUser)
 userRouter.post('/login', userController.LoginUser)
+userRouter.post('/logout', authController.logout);
 // Hiển thị form đăng ký
 userRouter.get('/register', (req, res) => {
     res.render('auth/register');

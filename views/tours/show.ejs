@@ -1,158 +1,146 @@
-<%# views/tourDetail.ejs %> <%# Giả định partials/header.ejs đã liên kết
-Bootstrap CSS và JS CDN %> <%- include('../partials/header') %>
+<%# views/tourDetail.ejs %>
+  <%# Giả định partials/header.ejs đã liên kết Bootstrap CSS và JS CDN %> <%- include('../partials/header') %>
 
-<div class="tour-hero-section position-relative mb-5">
-  <% if (tour.image) { %>
-  <img
-    src="<%= tour.image %>"
-    class="img-fluid w-100 tour-hero-image"
-    alt="<%= tour.title %>"
-  />
-  <% } else { %>
-  <img
-    src="https://placehold.co/1200x400/E0E0E0/666666?text=Tour+Image"
-    class="img-fluid w-100 tour-hero-image"
-    alt="Placeholder Image"
-  />
-  <% } %>
-  <div
-    class="tour-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-  >
-    <h1 class="text-white display-3 fw-bold text-uppercase text-center">
-      <%= tour.title || 'Tên Tour' %>
-    </h1>
-  </div>
-</div>
+      <div class="tour-hero-section position-relative mb-5">
+        <% if (tour.image) { %>
+          <img src="<%= tour.image %>" class="img-fluid w-100 tour-hero-image" alt="<%= tour.title %>" />
+          <% } else { %>
+            <img src="https://placehold.co/1200x400/E0E0E0/666666?text=Tour+Image"
+              class="img-fluid w-100 tour-hero-image" alt="Placeholder Image" />
+            <% } %>
+              <div
+                class="tour-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                <h1 class="text-white display-3 fw-bold text-uppercase text-center">
+                  <%= tour.title || 'Tên Tour' %>
+                </h1>
+              </div>
+      </div>
 
-<div class="container my-5">
-  <div class="row">
-    <div class="col-lg-4">
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <h4 class="text-accent text-uppercase fw-bold mb-4">Quick Facts</h4>
-          <ul class="list-unstyled quick-facts-list">
-            <li class="d-flex justify-content-between align-items-center mb-2">
-              <span class="fw-semibold text-dark">Next Date:</span>
-              <span class="text-muted"
-                ><%= tour.nextDate || 'Chưa cập nhật' %></span
-              >
-            </li>
-            <li class="d-flex justify-content-between align-items-center mb-2">
-              <span class="fw-semibold text-dark">Participants:</span>
-              <span class="text-muted"
-                ><%= tour.participants || 'Chưa cập nhật' %></span
-              >
-            </li>
-            <li class="d-flex justify-content-between align-items-center mb-2">
-              <span class="fw-semibold text-dark">Location:</span>
-              <span class="text-muted"
-                ><%= tour.location || 'Chưa cập nhật' %></span
-              >
-            </li>
-            <li class="d-flex justify-content-between align-items-center mb-2">
-              <span class="fw-semibold text-dark">Stops:</span>
-              <span class="text-muted"
-                ><%= tour.stops || 'Chưa cập nhật' %></span
-              >
-            </li>
-          </ul>
+      <div class="container my-5">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+              <div class="card-body p-4">
+                <h4 class="text-accent text-uppercase fw-bold mb-4">Quick Facts</h4>
+                <ul class="list-unstyled quick-facts-list">
+                  <li class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold text-dark">Next Date:</span>
+                    <span class="text-muted">
+                      <%= tour.nextDate || 'Chưa cập nhật' %>
+                    </span>
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold text-dark">Participants:</span>
+                    <span class="text-muted">
+                      <%= tour.participants || 'Chưa cập nhật' %>
+                    </span>
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold text-dark">Location:</span>
+                    <span class="text-muted">
+                      <%= tour.location || 'Chưa cập nhật' %>
+                    </span>
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold text-dark">Stops:</span>
+                    <span class="text-muted">
+                      <%= tour.stops || 'Chưa cập nhật' %>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4">
+              <h4 class="text-accent text-uppercase fw-bold mb-4">
+                <%= tour.title || 'Tour' %>
+              </h4>
+              <p class="text-secondary mb-3">
+                <%= tour.description || 'Chưa có mô tả cho tour này.' %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <h2 class="display-5 fw-bold text-accent mb-4">
+            Giá: $<%= tour.price || 'Liên hệ' %>
+          </h2>
+          <a href="/bookings/new?tourId=<%= tour.id %>"
+            class="btn btn-accent btn-lg rounded-pill px-5 py-3 shadow-lg tour-book-btn">
+            <i class="fas fa-paper-plane me-2"></i> Đặt tour ngay
+          </a>
         </div>
       </div>
-    </div>
 
-    <div class="col-lg-8">
-      <div class="card border-0 shadow-sm p-4">
-        <h4 class="text-accent text-uppercase fw-bold mb-4">
-          <%= tour.title || 'Tour' %>
-        </h4>
-        <p class="text-secondary mb-3">
-          <%= tour.description || 'Chưa có mô tả cho tour này.' %>
-        </p>
-      </div>
-    </div>
-  </div>
+      <%- include('../partials/footer') %>
 
-  <div class="text-center mt-5">
-    <h2 class="display-5 fw-bold text-accent mb-4">
-      Giá: $<%= tour.price || 'Liên hệ' %>
-    </h2>
-    <a
-      href="/bookings/new?tourId=<%= tour.id %>"
-      class="btn btn-accent btn-lg rounded-pill px-5 py-3 shadow-lg tour-book-btn"
-    >
-      <i class="fas fa-paper-plane me-2"></i> Đặt tour ngay
-    </a>
-  </div>
-</div>
+        <style>
+          /* Custom accent color (Pastel Blue) */
+          .text-accent {
+            color: #64b5f6 !important;
+            /* A slightly more vibrant, but still soft blue */
+          }
 
-<%- include('../partials/footer') %>
+          .tour-hero-section {
+            height: 400px;
+            overflow: hidden;
+          }
 
-<style>
-  /* Custom accent color (Pastel Blue) */
-  .text-accent {
-    color: #64b5f6 !important;
-    /* A slightly more vibrant, but still soft blue */
-  }
+          .tour-hero-image {
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+          }
 
-  .tour-hero-section {
-    height: 400px;
-    overflow: hidden;
-  }
+          .tour-hero-overlay {
+            background: linear-gradient(to right,
+                rgba(167, 217, 240, 0.7),
+                rgba(100, 181, 246, 0.7));
+            /* Pastel Blue gradient */
+          }
 
-  .tour-hero-image {
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.7);
-  }
+          .tour-hero-overlay h1 {
+            font-size: 4rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+          }
 
-  .tour-hero-overlay {
-    background: linear-gradient(
-      to right,
-      rgba(167, 217, 240, 0.7),
-      rgba(100, 181, 246, 0.7)
-    );
-    /* Pastel Blue gradient */
-  }
+          .card {
+            border-radius: 0.75rem;
+          }
 
-  .tour-hero-overlay h1 {
-    font-size: 4rem;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-  }
+          .card-body h4.text-accent {
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+          }
 
-  .card {
-    border-radius: 0.75rem;
-  }
+          .quick-facts-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+          }
 
-  .card-body h4.text-accent {
-    font-size: 1.25rem;
-    letter-spacing: 0.05em;
-  }
+          .quick-facts-list li:last-child {
+            border-bottom: none;
+          }
 
-  .quick-facts-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-  }
+          .btn-accent {
+            background-color: #64b5f6;
+            /* Primary Pastel Blue */
+            border-color: #64b5f6;
+            font-size: 1.25rem;
+            font-weight: bold;
+          }
 
-  .quick-facts-list li:last-child {
-    border-bottom: none;
-  }
+          .btn-accent:hover {
+            background-color: #42a5f5;
+            /* Darker Pastel Blue on hover */
+            border-color: #42a5f5;
+          }
 
-  .btn-accent {
-    background-color: #64b5f6;
-    /* Primary Pastel Blue */
-    border-color: #64b5f6;
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-
-  .btn-accent:hover {
-    background-color: #42a5f5;
-    /* Darker Pastel Blue on hover */
-    border-color: #42a5f5;
-  }
-
-  /* Ensure text-primary in the price heading also uses the accent color */
-  .text-primary {
-    color: #64b5f6 !important;
-  }
-</style>
+          /* Ensure text-primary in the price heading also uses the accent color */
+          .text-primary {
+            color: #64b5f6 !important;
+          }
+        </style>

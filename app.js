@@ -9,6 +9,8 @@ const tourRoutes = require('./routes/tourRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const adminTourRoutes = require('./routes/adminTourRoutes');
 const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const auth = require('./middleware/auth');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tour-booking')
   .then(() => console.log('MongoDB connected'))
@@ -36,11 +38,12 @@ app.use((req, res, next) => {
 app.use('/tours', tourRoutes);
 app.use('/bookings', bookingRoutes);
 app.use('/admin/tours', adminTourRoutes);
+app.use('/admin', adminRoutes);
 app.use('/users', userRoutes);
 
 app.get('/login', (req, res) => res.redirect('/users/login'));
 app.get('/register', (req, res) => res.redirect('/users/register'));
-app.get('/profile', (req, res) => res.redirect('/users/profile'));
+app.get('/profile', auth.requireLogin, (req, res) => res.redirect('/users/profile'));
 
 app.get('/', (req, res) => res.redirect('/tours'));
 

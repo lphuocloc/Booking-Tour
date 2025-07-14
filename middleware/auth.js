@@ -25,4 +25,26 @@ const requireRole = (...roles) => {
         next();
     };
 };
-module.exports = { authMiddleWare, requireRole };
+
+// Bắt buộc phải đăng nhập (user hoặc admin)
+exports.requireLogin = (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/users/login');
+  }
+  next();
+};
+
+// Bắt buộc phải là admin
+exports.requireAdmin = (req, res, next) => {
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.redirect('/users/login');
+  }
+  next();
+};
+
+  module.exports = {
+    authMiddleWare,
+    requireRole,
+    requireLogin: exports.requireLogin,
+    requireAdmin: exports.requireAdmin
+  };

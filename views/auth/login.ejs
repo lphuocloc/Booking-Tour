@@ -1,21 +1,21 @@
 <%- include('../partials/header') %>
-  <div class="container mt-5" style="max-width: 400px;">
-    <h1 class="mb-4">Login</h1>
+  <div class="login-container">
+    <h1 class="login-title">Đăng nhập</h1>
     <% if (error) { %>
       <div class="alert alert-danger">
         <%= error %>
       </div>
       <% } %>
         <form action="/login" method="POST">
-          <div class="mb-3 bg-light p-3 rounded-3">
-            <label class="form-label">Username</label>
+          <div class="mb-3">
+            <label class="form-label">Tên đăng nhập</label>
             <input type="text" class="form-control" name="username" required />
           </div>
           <div class="mb-3">
-            <label class="form-label">Password</label>
+            <label class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" name="password" required />
           </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
         </form>
   </div>
   <%- include('../partials/footer') %>

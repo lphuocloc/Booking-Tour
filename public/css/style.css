@@ -1,6 +1,301 @@
-body { font-family: Arial, sans-serif; margin: 0; padding: 1rem; background: #fafafa; }
-nav { background: #333; padding: 1rem; }
-nav a { color: #fff; margin-right: 1rem; text-decoration: none; }
-h1 { color: #333; }
-ul { list-style: none; padding: 0; }
-li { background: #fff; margin-bottom: 1rem; padding: 1rem; border-radius: 6px; }
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background: #f4f6fb;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+    transition: box-shadow 0.2s;
+}
+
+.login-container:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.login-title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #2d3a4a;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #2d3a4a;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+    border-color: #4f8cff;
+    box-shadow: 0 0 0 2px #e3f0ff;
+    background: #fff;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #4f8cff 0%, #3358e6 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(79, 140, 255, 0.08);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(90deg, #3358e6 0%, #4f8cff 100%);
+    box-shadow: 0 4px 16px rgba(51, 88, 230, 0.12);
+}
+
+.alert-danger {
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+    }
+}
+
+nav {
+    background: #333;
+    padding: 1rem;
+}
+
+nav a {
+    color: #fff;
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+h1 {
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+.tour-list-title {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #2d3a4a;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.tour-card {
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: none;
+    background: #fff;
+}
+
+.tour-card:hover {
+    box-shadow: 0 8px 32px rgba(51, 88, 230, 0.14);
+    transform: translateY(-4px) scale(1.02);
+}
+
+.tour-card .card-title a {
+    color: #3358e6;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.tour-card .card-title a:hover {
+    color: #4f8cff;
+}
+
+.tour-card .badge {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #4f8cff 0%, #3358e6 100%);
+    color: #fff;
+    margin-left: 0.5em;
+}
+
+.tour-card .card-text {
+    color: #4a5568;
+    font-size: 1.05rem;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .tour-list-title {
+        font-size: 1.4rem;
+    }
+
+    .tour-card {
+        padding: 0.5rem;
+    }
+}
+
+.tour-detail-container {
+    max-width: 540px;
+    margin: 40px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+    text-align: center;
+}
+
+.tour-detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3358e6;
+    margin-bottom: 1rem;
+}
+
+.tour-detail-desc {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.tour-detail-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #4f8cff 0%, #3358e6 100%);
+    border-radius: 8px;
+    display: inline-block;
+    padding: 0.5em 1.2em;
+    margin-bottom: 2rem;
+}
+
+.btn-book-tour {
+    display: inline-block;
+    width: 100%;
+    background: linear-gradient(90deg, #3358e6 0%, #4f8cff 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(51, 88, 230, 0.08);
+    text-decoration: none;
+}
+
+.btn-book-tour:hover,
+.btn-book-tour:focus {
+    background: linear-gradient(90deg, #4f8cff 0%, #3358e6 100%);
+    box-shadow: 0 4px 16px rgba(51, 88, 230, 0.12);
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .tour-detail-container {
+        padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    }
+
+    .tour-detail-title {
+        font-size: 1.3rem;
+    }
+}
+
+.booking-container {
+    max-width: 480px;
+    margin: 40px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.booking-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #3358e6;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.booking-form .form-label {
+    font-weight: 500;
+    color: #2d3a4a;
+}
+
+.booking-form .form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e6ed;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.booking-form .form-control:focus {
+    border-color: #4f8cff;
+    box-shadow: 0 0 0 2px #e3f0ff;
+    background: #fff;
+}
+
+.btn-booking {
+    background: linear-gradient(90deg, #3358e6 0%, #4f8cff 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    width: 100%;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(51, 88, 230, 0.08);
+}
+
+.btn-booking:hover,
+.btn-booking:focus {
+    background: linear-gradient(90deg, #4f8cff 0%, #3358e6 100%);
+    box-shadow: 0 4px 16px rgba(51, 88, 230, 0.12);
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .booking-container {
+        padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    }
+
+    .booking-title {
+        font-size: 1.2rem;
+    }
+}

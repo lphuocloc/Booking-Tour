@@ -1,9 +1,18 @@
 <%- include('../partials/header') %>
-<h1>Book Tour: <%= tour.title %></h1>
-<form action="/bookings" method="POST">
-  <input type="hidden" name="tourId" value="<%= tour._id %>" />
-  <div><label>Your name</label><input type="text" name="customerName" required /></div>
-  <div><label>Email</label><input type="email" name="customerEmail" required /></div>
-  <button type="submit">Confirm Booking ($<%= tour.price %>)</button>
-</form>
-<%- include('../partials/footer') %>
+  <div class="booking-container">
+    <h1 class="booking-title">Đặt tour: <%= tour.title %>
+    </h1>
+    <form action="/bookings" method="POST" class="booking-form">
+      <input type="hidden" name="tourId" value="<%= tour._id %>" />
+      <div class="mb-3">
+        <label class="form-label">Họ tên</label>
+        <input type="text" class="form-control" name="customerName" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" name="customerEmail" required />
+      </div>
+      <button type="submit" class="btn btn-booking">Xác nhận đặt tour ($<%= tour.price %>)</button>
+    </form>
+  </div>
+  <%- include('../partials/footer') %>

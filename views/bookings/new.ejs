@@ -255,14 +255,17 @@
       <div class="mb-3">
         <label for="customerName" class="form-label">Full Name</label>
         <input type="text" class="form-control" id="customerName" name="customerName" required value="<%= user ? user.fullname : '' %>" />
+        <div class="invalid-feedback" id="nameError">Full name is required.</div>
       </div>
       <div class="mb-3">
         <label for="customerEmail" class="form-label">Email</label>
         <input type="email" class="form-control" id="customerEmail" name="customerEmail" required value="<%= user ? user.email : '' %>" />
+        <div class="invalid-feedback" id="emailError">Please enter a valid email address.</div>
       </div>
       <div class="mb-3">
         <label for="customerPhone" class="form-label">Phone Number</label>
         <input type="text" class="form-control" id="customerPhone" name="customerPhone" required value="<%= user ? user.phonenumber : '' %>" />
+        <div class="invalid-feedback" id="phoneError">Phone number must be exactly 10 digits.</div>
       </div>
       <div class="mb-3">
         <label for="participants" class="form-label">Number of Participants</label>
@@ -290,6 +293,9 @@
         <p><strong>Tour:</strong> <span id="modalTourTitle"></span></p>
         <p><strong>Full Name:</strong> <span id="modalCustomerName"></span></p>
         <p><strong>Email:</strong> <span id="modalCustomerEmail"></span></p>
+        <p><strong>Phone Number:</strong> <span id="modalCustomerPhone"></span></p>
+        <p><strong>Number of Participants:</strong> <span id="modalParticipants"></span></p>
+        <p><strong>Start Date:</strong> <span id="modalStartDate"></span></p>
         <p><strong>Price:</strong> $<%= tour.price %></p>
       </div>
       <div class="modal-actions">
@@ -318,10 +324,20 @@
         const startDateInput = document.getElementById('startDate');
         const participantsError = document.getElementById('participantsError');
         const startDateError = document.getElementById('startDateError');
+        const customerPhoneInput = document.getElementById('customerPhone');
+        const phoneError = document.getElementById('phoneError');
+        const emailError = document.getElementById('emailError');
+        const nameError = document.getElementById('nameError');
+        const modalCustomerPhone = document.getElementById('modalCustomerPhone');
+        const modalParticipants = document.getElementById('modalParticipants');
+        const modalStartDate = document.getElementById('modalStartDate');
 
         // Hide error by default
         participantsError.style.display = 'none';
         startDateError.style.display = 'none';
+        phoneError.style.display = 'none';
+        emailError.style.display = 'none';
+        nameError.style.display = 'none';
 
         // Validate participants > 0
         function validateParticipants() {
@@ -354,19 +370,72 @@
         }
         startDateInput.addEventListener('change', validateStartDate);
 
+        // Validate phone: exactly 10 digits
+        function validatePhone() {
+          const phone = customerPhoneInput.value.trim();
+          if (!/^\d{10}$/.test(phone)) {
+            customerPhoneInput.classList.add('is-invalid');
+            phoneError.style.display = 'block';
+            return false;
+          } else {
+            customerPhoneInput.classList.remove('is-invalid');
+            phoneError.style.display = 'none';
+            return true;
+          }
+        }
+        customerPhoneInput.addEventListener('input', validatePhone);
+
+        // Validate email: correct syntax
+        function validateEmail() {
+          const email = customerEmailInput.value.trim();
+          // Simple email regex
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            customerEmailInput.classList.add('is-invalid');
+            emailError.style.display = 'block';
+            return false;
+          } else {
+            customerEmailInput.classList.remove('is-invalid');
+            emailError.style.display = 'none';
+            return true;
+          }
+        }
+        customerEmailInput.addEventListener('input', validateEmail);
+
+        // Validate name: not empty
+        function validateName() {
+          const name = customerNameInput.value.trim();
+          if (name === '') {
+            customerNameInput.classList.add('is-invalid');
+            nameError.style.display = 'block';
+            return false;
+          } else {
+            customerNameInput.classList.remove('is-invalid');
+            nameError.style.display = 'none';
+            return true;
+          }
+        }
+        customerNameInput.addEventListener('input', validateName);
+
         // Function to update button disabled state based on checkbox and validation
         function updateButtonState() {
-          confirmButton.disabled = !termsCheckbox.checked || !validateParticipants() || !validateStartDate();
+          confirmButton.disabled = !termsCheckbox.checked || !validateName() || !validateEmail() || !validatePhone() || !validateParticipants() || !validateStartDate();
         }
         termsCheckbox.addEventListener('change', updateButtonState);
         participantsInput.addEventListener('input', updateButtonState);
         startDateInput.addEventListener('change', updateButtonState);
+        customerPhoneInput.addEventListener('input', updateButtonState);
+        customerEmailInput.addEventListener('input', updateButtonState);
+        customerNameInput.addEventListener('input', updateButtonState);
         updateButtonState();
 
         // Function to show the modal
         function showModal() {
-          if (!bookingForm.checkValidity() || !validateParticipants() || !validateStartDate()) {
+          if (!bookingForm.checkValidity() || !validateName() || !validateEmail() || !validatePhone() || !validateParticipants() || !validateStartDate()) {
             bookingForm.reportValidity();
+            validateName();
+            validateEmail();
+            validatePhone();
             validateParticipants();
             validateStartDate();
             return;
@@ -374,12 +443,37 @@
           modalTourTitle.textContent = "<%= tour.title %>";
           modalCustomerName.textContent = customerNameInput.value;
           modalCustomerEmail.textContent = customerEmailInput.value;
+          modalCustomerPhone.textContent = customerPhoneInput.value;
+          modalParticipants.textContent = participantsInput.value;
+          modalStartDate.textContent = startDateInput.value;
           confirmationModal.classList.add('show');
         }
         confirmButton.addEventListener('click', showModal);
         modalConfirmBtn.addEventListener('click', function () {
-          if (bookingForm.checkValidity() && validateParticipants() && validateStartDate()) {
-            bookingForm.submit();
+          if (bookingForm.checkValidity() && validateName() && validateEmail() && validatePhone() && validateParticipants() && validateStartDate()) {
+            // Gửi AJAX tạo booking, nhận link QR và redirect
+            const formData = {
+              tourId: bookingForm.tourId.value,
+              customerName: customerNameInput.value,
+              customerEmail: customerEmailInput.value,
+              customerPhone: customerPhoneInput.value,
+              participants: participantsInput.value,
+              startDate: startDateInput.value
+            };
+            fetch('/bookings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success && data.paymentLink) {
+                window.location.href = data.paymentLink;
+              } else {
+                alert('Đặt tour thất bại!');
+              }
+            })
+            .catch(() => alert('Lỗi kết nối server!'));
             confirmationModal.classList.remove('show');
           } else {
             bookingForm.reportValidity();

@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<div style="max-width:600px;margin:40px auto;padding:32px;background:#fff;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+  <h1 style="color:#22c55e;font-size:2.5rem;margin-bottom:1rem">Thanh toán thành công!</h1>
+  <h2 style="font-size:1.3rem;margin-bottom:1.5rem">Thông tin đơn hàng</h2>
+  <table style="margin:0 auto 1.5rem auto;text-align:left;font-size:1.1rem">
+    <tr><td><b>Mã đơn hàng:</b></td><td><%= booking.order_code %></td></tr>
+    <tr><td><b>Tên tour:</b></td><td><%= booking.tourId ? booking.tourId.title : '' %></td></tr>
+    <tr><td><b>Khách hàng:</b></td><td><%= booking.customerName %></td></tr>
+    <tr><td><b>Email:</b></td><td><%= booking.customerEmail %></td></tr>
+    <tr><td><b>Số điện thoại:</b></td><td><%= booking.customerPhone %></td></tr>
+    <tr><td><b>Số lượng:</b></td><td><%= booking.participants %></td></tr>
+    <tr><td><b>Ngày khởi hành:</b></td><td><%= booking.startDate ? booking.startDate.toLocaleDateString ? booking.startDate.toLocaleDateString() : booking.startDate : '' %></td></tr>
+    <tr><td><b>Tổng tiền:</b></td><td><%= booking.price %> VNĐ</td></tr>
+    <tr><td><b>Trạng thái:</b></td><td><span style="color:#22c55e;font-weight:600">Đã thanh toán</span></td></tr>
+  </table>
+  <a href="/tours" style="display:inline-block;margin-top:2rem;padding:12px 32px;background:#4f46e5;color:#fff;border-radius:8px;text-decoration:none;font-weight:600">Quay lại trang tour</a>
+</div>
+<%- include('../partials/footer') %>

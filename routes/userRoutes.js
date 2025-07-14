@@ -1,11 +1,14 @@
 var express = require('express')
 const userController = require('../controllers/userController');
 const auth = require('../middleware/auth');
+const authController = require('../controllers/authController');
+const bookingController = require('../controllers/bookingController');
 var userRouter = express.Router();
 
 // userRouter.route('/')
 userRouter.post('/register', userController.registerUser)
 userRouter.post('/login', userController.LoginUser)
+userRouter.post('/logout', authController.logout);
 // Hiển thị form đăng ký
 userRouter.get('/register', (req, res) => {
     res.render('auth/register');
@@ -35,4 +38,10 @@ userRouter.get('/get',
     auth.authMiddleWare,
     auth.requireRole('admin'),
     userController.getAllUsers);
+// API lấy lịch sử booking của user
+userRouter.get('/bookings/history', bookingController.getUserBookingHistory);
+userRouter.get('/profile/booking-history', (req, res) => {
+    if (!req.session.user) return res.redirect('/users/login');
+    res.render('user/bookingHistory', { user: req.session.user, session: req.session });
+});
 module.exports = userRouter

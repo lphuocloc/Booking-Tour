@@ -4,6 +4,11 @@ const bookingSchema = new mongoose.Schema({
   price: Number,
   customerName: String,
   customerEmail: String,
-  date: { type: Date, default: Date.now }
+  customerPhone: String,
+  participants: Number,
+  startDate: Date,
+  date: { type: Date, default: Date.now },
+  order_code: Number, // Mã đơn hàng PayOS
+  status: { type: String, default: 'Pending' }, // Trạng thái: Pending, Paid, Cancelled
 });
 module.exports = mongoose.model('Booking', bookingSchema);

@@ -1,0 +1,106 @@
+<%- include('../partials/header') %>
+<style>
+  .profile-sidebar-gradient {
+    background: linear-gradient(180deg, #e3f0ff 0%, #f8fbff 100%);
+  }
+</style>
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 mb-4">
+      <div class="d-flex flex-column justify-content-between align-items-stretch bg-white shadow rounded-4 profile-sidebar-gradient" style="min-height: 500px;">
+        <div class="mt-3 px-3">
+          <div class="list-group list-group-flush">
+            <a href="/users/profile" class="list-group-item list-group-item-action rounded-3 mb-2 d-flex align-items-center border-0">
+              <i class="bi bi-person-fill me-2"></i> Profile
+            </a>
+            <a href="/users/profile/booking-history" class="list-group-item list-group-item-action active rounded-3 d-flex align-items-center border-0" style="background:#0d6efd; color:#fff;">
+              <i class="bi bi-clock-history me-2"></i> Booking History
+            </a>
+          </div>
+        </div>
+        <div class="mb-3 px-3">
+          <form action="/users/logout" method="POST">
+            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill d-flex align-items-center justify-content-center">
+              <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-7">
+      <div class="card shadow rounded p-4">
+        <h4 class="mb-4"><i class="bi bi-clock-history me-2"></i>Booking History</h4>
+        <div class="mb-3">
+          <button class="btn btn-outline-secondary me-2 filter-btn" data-status="all">All</button>
+          <button class="btn btn-outline-warning me-2 filter-btn" data-status="pending">Pending</button>
+          <button class="btn btn-outline-success me-2 filter-btn" data-status="success">Success</button>
+          <button class="btn btn-outline-danger filter-btn" data-status="cancel">Cancelled</button>
+        </div>
+        <div id="booking-cards-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function getStatusBadge(status) {
+    if (status === 'Pending') return '<span class="badge bg-warning text-dark">Pending</span>';
+    if (status === 'Paid') return '<span class="badge bg-success">Success</span>';
+    if (status === 'Cancelled') return '<span class="badge bg-danger">Cancelled</span>';
+    return `<span class="badge bg-secondary">${status}</span>`;
+  }
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const status = this.getAttribute('data-status');
+      loadBookings(status);
+    });
+  });
+  function loadBookings(status = 'all') {
+    fetch(`/users/bookings/history?status=${status}`)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('booking-cards-container');
+        container.innerHTML = '';
+        if (!data.bookings || !data.bookings.length) {
+          container.innerHTML = '<p>No bookings found.</p>';
+          return;
+        }
+        data.bookings.forEach((booking, idx) => {
+          let borderClass = 'border-secondary';
+          if (booking.status === 'Pending') borderClass = 'border-warning';
+          if (booking.status === 'Paid') borderClass = 'border-success';
+          if (booking.status === 'Cancelled') borderClass = 'border-danger';
+          const card = document.createElement('div');
+          card.className = `card mb-3 ${borderClass}`;
+          card.innerHTML = `
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <b class="fs-5 text-primary">${booking.tourId?.title || 'Tour deleted'}</b>
+                <div class="text-muted small"><span class="fw-bold">Booking ID:</span> ${booking._id}</div>
+                <div class="text-muted small"><span class="fw-bold">Booking Date:</span> ${new Date(booking.date).toLocaleDateString()}</div>
+              </div>
+              <button class="btn btn-primary btn-sm toggle-detail-btn" data-bs-toggle="collapse" data-bs-target="#detail${idx}">View Details</button>
+            </div>
+            <div class="collapse card-detail" id="detail${idx}">
+              <div class="card-body">
+                <div><span class="fw-bold">Status:</span> ${getStatusBadge(booking.status)}</div>
+                <div><span class="fw-bold">Participants:</span> ${booking.participants}</div>
+                <div><span class="fw-bold">Total Price:</span> ${booking.price?.toLocaleString()} VND</div>
+                <div><span class="fw-bold">Full Name:</span> ${booking.customerName}</div>
+                <div><span class="fw-bold">Email:</span> ${booking.customerEmail}</div>
+                <div><span class="fw-bold">Phone:</span> ${booking.customerPhone}</div>
+                <div><span class="fw-bold">Start Date:</span> ${booking.startDate ? new Date(booking.startDate).toLocaleDateString() : ''}</div>
+                <div><span class="fw-bold">Order Code:</span> ${booking.order_code || ''}</div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      });
+  }
+  loadBookings();
+</script>
+<%- include('../partials/footer') %> 

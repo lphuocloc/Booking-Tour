@@ -14,5 +14,9 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy(() => res.redirect('/login'));
+  req.session.toast = { type: 'success', message: 'Đăng xuất thành công!' };
+  req.session.destroy(() => {
+    // Khi session bị destroy, toast sẽ mất, nên cần truyền qua cookie hoặc query, nhưng ở đây sẽ chuyển hướng kèm query
+    res.redirect('/tours?logout=1');
+  });
 };

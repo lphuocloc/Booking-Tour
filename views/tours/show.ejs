@@ -68,10 +68,17 @@
           <h2 class="display-5 fw-bold text-accent mb-4">
             Price: $<%= tour.price || 'Contact us' %>
           </h2>
-          <a href="/bookings/new?tourId=<%= tour.id %>"
-            class="btn btn-accent btn-lg rounded-pill px-5 py-3 shadow-lg tour-book-btn">
-            <i class="fas fa-paper-plane me-2"></i> Book now
-          </a>
+          <% if (session && session.user) { %>
+            <a href="/bookings/new?tourId=<%= tour.id %>"
+              class="btn btn-accent btn-lg rounded-pill px-5 py-3 shadow-lg tour-book-btn">
+              <i class="fas fa-paper-plane me-2"></i> Book now
+            </a>
+          <% } else { %>
+            <a href="/users/login"
+              class="btn btn-accent btn-lg rounded-pill px-5 py-3 shadow-lg tour-book-btn">
+              <i class="fas fa-paper-plane me-2"></i> Book now
+            </a>
+          <% } %>
         </div>
       </div>
 

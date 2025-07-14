@@ -75,3 +75,23 @@ exports.handlePaymentCallback = async (req, res) => {
   }
   res.send('Trạng thái không xác định');
 };
+
+// API: Lấy lịch sử booking của user (filter theo status)
+exports.getUserBookingHistory = async (req, res) => {
+  try {
+    // Lấy userId từ session
+    const user = req.session.user;
+    if (!user) return res.status(401).json({ error: 'Chưa đăng nhập' });
+    const status = req.query.status;
+    let query = { customerEmail: user.email };
+    if (status && status !== 'all') {
+      if (status === 'pending') query.status = 'Pending';
+      else if (status === 'success') query.status = 'Paid';
+      else if (status === 'cancel') query.status = 'Cancelled';
+    }
+    const bookings = await Booking.find(query).populate('tourId').sort({ date: -1 });
+    res.json({ bookings });
+  } catch (err) {
+    res.status(500).json({ error: 'Lỗi lấy lịch sử booking' });
+  }
+};

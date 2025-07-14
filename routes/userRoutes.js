@@ -2,6 +2,7 @@ var express = require('express')
 const userController = require('../controllers/userController');
 const auth = require('../middleware/auth');
 const authController = require('../controllers/authController');
+const bookingController = require('../controllers/bookingController');
 var userRouter = express.Router();
 
 // userRouter.route('/')
@@ -37,4 +38,10 @@ userRouter.get('/get',
     auth.authMiddleWare,
     auth.requireRole('admin'),
     userController.getAllUsers);
+// API lấy lịch sử booking của user
+userRouter.get('/bookings/history', bookingController.getUserBookingHistory);
+userRouter.get('/profile/booking-history', (req, res) => {
+    if (!req.session.user) return res.redirect('/users/login');
+    res.render('user/bookingHistory', { user: req.session.user, session: req.session });
+});
 module.exports = userRouter

@@ -1,0 +1,15 @@
+<%- include('../../partials/header') %>
+<h1>Manage Tours</h1>
+<p><a href="/admin/tours/new">New Tour</a></p>
+<ul>
+  <% tours.forEach(tour => { %>
+    <li>
+      <%= tour.title %> - $<%= tour.price %>
+      <a href="/admin/tours/<%= tour._id %>/edit">Edit</a>
+      <form action="/admin/tours/<%= tour._id %>/delete" method="POST" style="display:inline">
+        <button type="submit" onclick="return confirm('Delete?')">Delete</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+<%- include('../../partials/footer') %>

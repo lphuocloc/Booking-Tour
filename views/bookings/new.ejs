@@ -1,0 +1,9 @@
+<%- include('../partials/header') %>
+<h1>Book Tour: <%= tour.title %></h1>
+<form action="/bookings" method="POST">
+  <input type="hidden" name="tourId" value="<%= tour._id %>" />
+  <div><label>Your name</label><input type="text" name="customerName" required /></div>
+  <div><label>Email</label><input type="email" name="customerEmail" required /></div>
+  <button type="submit">Confirm Booking ($<%= tour.price %>)</button>
+</form>
+<%- include('../partials/footer') %>

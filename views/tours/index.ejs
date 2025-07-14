@@ -1,0 +1,11 @@
+<%- include('../partials/header') %>
+<h1>All Tours</h1>
+<ul>
+  <% tours.forEach(tour => { %>
+    <li>
+      <h3><a href="/tours/<%= tour._id %>"><%= tour.title %></a> - $<%= tour.price %></h3>
+      <p><%= tour.description %></p>
+    </li>
+  <% }) %>
+</ul>
+<%- include('../partials/footer') %>

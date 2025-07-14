@@ -1,0 +1,9 @@
+<%- include('../../partials/header') %>
+<h1>Edit Tour</h1>
+<form action="/admin/tours/<%= tour._id %>/update" method="POST">
+  <div><label>Title</label><input type="text" name="title" value="<%= tour.title %>" required /></div>
+  <div><label>Price</label><input type="number" name="price" value="<%= tour.price %>" required step="0.01" /></div>
+  <div><label>Description</label><textarea name="description"><%= tour.description %></textarea></div>
+  <button type="submit">Update</button>
+</form>
+<%- include('../../partials/footer') %>

@@ -1,0 +1,6 @@
+<%- include('../partials/header') %>
+<h1><%= tour.title %></h1>
+<p><%= tour.description %></p>
+<p>Price: $<%= tour.price %></p>
+<a href="/bookings/new?tourId=<%= tour._id %>">Book this tour</a>
+<%- include('../partials/footer') %>

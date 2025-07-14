@@ -1,0 +1,10 @@
+<%- include('../partials/header') %>
+<h1>Admin Dashboard</h1>
+<p><a href="/admin/tours">Manage Tours</a></p>
+<h2>Bookings</h2>
+<ul>
+  <% bookings.forEach(b => { %>
+    <li><%= b.customerName %> booked <%= b.tourId.title %> for $<%= b.price %> on <%= b.date.toLocaleString() %></li>
+  <% }) %>
+</ul>
+<%- include('../partials/footer') %>

@@ -1,11 +1,24 @@
 <%- include('../partials/header') %>
-<h1>All Tours</h1>
-<ul>
-  <% tours.forEach(tour => { %>
-    <li>
-      <h3><a href="/tours/<%= tour._id %>"><%= tour.title %></a> - $<%= tour.price %></h3>
-      <p><%= tour.description %></p>
-    </li>
-  <% }) %>
-</ul>
-<%- include('../partials/footer') %>
+  <div class="container mt-5">
+    <h1 class="mb-4">All Tours</h1>
+    <div class="row">
+      <% tours.forEach(tour=> { %>
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/tours/<%= tour._id %>">
+                  <%= tour.title %>
+                </a>
+                <span class="badge bg-primary">$<%= tour.price %></span>
+              </h3>
+              <p class="card-text">
+                <%= tour.description %>
+              </p>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+  </div>
+  <%- include('../partials/footer') %>

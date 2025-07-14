@@ -1,11 +1,21 @@
 <%- include('../partials/header') %>
-<h1>Login</h1>
-<% if (error) { %>
-  <p style="color:red"><%= error %></p>
-<% } %>
-<form action="/login" method="POST">
-  <div><label>Username</label><input type="text" name="username" required /></div>
-  <div><label>Password</label><input type="password" name="password" required /></div>
-  <button type="submit">Login</button>
-</form>
-<%- include('../partials/footer') %>
+  <div class="container mt-5" style="max-width: 400px;">
+    <h1 class="mb-4">Login</h1>
+    <% if (error) { %>
+      <div class="alert alert-danger">
+        <%= error %>
+      </div>
+      <% } %>
+        <form action="/login" method="POST">
+          <div class="mb-3 bg-light p-3 rounded-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+  </div>
+  <%- include('../partials/footer') %>

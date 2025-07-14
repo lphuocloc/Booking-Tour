@@ -38,6 +38,10 @@ app.use('/bookings', bookingRoutes);
 app.use('/admin/tours', adminTourRoutes);
 app.use('/users', userRoutes);
 
+app.get('/login', (req, res) => res.redirect('/users/login'));
+app.get('/register', (req, res) => res.redirect('/users/register'));
+app.get('/profile', (req, res) => res.redirect('/users/profile'));
+
 app.get('/', (req, res) => res.redirect('/tours'));
 
 const PORT = process.env.PORT || 3000;

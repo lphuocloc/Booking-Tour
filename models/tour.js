@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const tourSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Tiêu đề không được để trống"],
+    required: [true, "Title is required"],
     unique: true,
     trim: true,
     minlength: 3,
@@ -11,12 +11,12 @@ const tourSchema = new mongoose.Schema({
   subtitle: { type: String, trim: true },
   price: {
     type: Number,
-    required: [true, "Giá không được để trống"],
-    min: [0, "Giá phải lớn hơn 0"],
+    required: [true, "Price is required"],
+    min: [0, "Price must be greater than 0"],
   },
   description: {
     type: String,
-    required: [true, "Mô tả không được để trống"],
+    required: [true, "Description is required"],
     minlength: 10,
   },
   image: { type: String, trim: true },

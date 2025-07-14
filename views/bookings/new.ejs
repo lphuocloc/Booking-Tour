@@ -1,18 +1,352 @@
 <%- include('../partials/header') %>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    .booking-container {
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 2.5rem;
+      background-color: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .booking-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: #1f2937;
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .mb-3 {
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-booking {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background-color: #4f46e5;
+      color: #ffffff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      border: none;
+      cursor: pointer;
+      font-size: 1.125rem;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+    .btn-booking:hover {
+      background-color: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    .btn-booking:active {
+      transform: translateY(0);
+    }
+
+    /* Disabled state for the button */
+    .btn-booking:disabled {
+      background-color: #9ca3af;
+      /* A lighter gray for disabled state */
+      cursor: not-allowed;
+      opacity: 0.7;
+      transform: none;
+      /* Remove hover/active transform */
+    }
+
+    .btn-booking:disabled:hover {
+      background-color: #9ca3af;
+      /* Keep the same color on hover when disabled */
+    }
+
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      width: 90%;
+      max-width: 450px;
+      transform: translateY(-20px);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .modal-info p {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+      color: #374151;
+    }
+
+    .modal-info strong {
+      color: #1f2937;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    .modal-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+      flex: 1;
+    }
+
+    .modal-btn-confirm {
+      background-color: #22c55e;
+      color: #ffffff;
+    }
+
+    .modal-btn-confirm:hover {
+      background-color: #16a34a;
+      transform: translateY(-1px);
+    }
+
+    .modal-btn-cancel {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+
+    .modal-btn-cancel:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    /* Checkbox specific styles */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 0.75rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+      accent-color: #4f46e5;
+      /* Changes checkbox color */
+    }
+
+    .checkbox-container label {
+      margin-bottom: 0;
+      /* Override default label margin */
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .booking-container {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+      }
+
+      .booking-title {
+        font-size: 1.75rem;
+      }
+
+      .modal-content {
+        padding: 1.5rem;
+      }
+
+      .modal-title {
+        font-size: 1.5rem;
+      }
+
+      .modal-info p {
+        font-size: 1rem;
+      }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+
   <div class="booking-container">
     <h1 class="booking-title">Đặt tour: <%= tour.title %>
     </h1>
-    <form action="/bookings" method="POST" class="booking-form">
+    <form id="bookingForm" action="/bookings" method="POST" class="booking-form">
       <input type="hidden" name="tourId" value="<%= tour._id %>" />
       <div class="mb-3">
-        <label class="form-label">Họ tên</label>
-        <input type="text" class="form-control" name="customerName" required />
+        <label for="customerName" class="form-label">Họ tên</label>
+        <input type="text" class="form-control" id="customerName" name="customerName" required />
       </div>
       <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-control" name="customerEmail" required />
+        <label for="customerEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="customerEmail" name="customerEmail" required />
       </div>
-      <button type="submit" class="btn btn-booking">Xác nhận đặt tour ($<%= tour.price %>)</button>
+      <!-- New terms and conditions checkbox -->
+      <div class="checkbox-container">
+        <input type="checkbox" id="termsCheckbox" name="termsAccepted" required />
+        <label for="termsCheckbox">Tôi đồng ý với thông tin trên và muốn tiếp tục</label>
+      </div>
+      <!-- The button is now disabled by default and will be enabled by JS -->
+      <button type="button" id="confirmButton" class="btn btn-booking" disabled>Xác nhận đặt tour ($<%= tour.price %>
+          )</button>
     </form>
   </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2 class="modal-title">Xác nhận thông tin đặt tour</h2>
+      <div class="modal-info">
+        <p><strong>Tour:</strong> <span id="modalTourTitle"></span></p>
+        <p><strong>Họ tên:</strong> <span id="modalCustomerName"></span></p>
+        <p><strong>Email:</strong> <span id="modalCustomerEmail"></span></p>
+        <p><strong>Giá:</strong> $<%= tour.price %>
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Xác nhận</button>
+        <button type="button" id="modalCancelBtn" class="modal-btn modal-btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
+
   <%- include('../partials/footer') %>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const confirmButton = document.getElementById('confirmButton');
+        const bookingForm = document.getElementById('bookingForm');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const modalTourTitle = document.getElementById('modalTourTitle');
+        const modalCustomerName = document.getElementById('modalCustomerName');
+        const modalCustomerEmail = document.getElementById('modalCustomerEmail');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const customerNameInput = document.getElementById('customerName');
+        const customerEmailInput = document.getElementById('customerEmail');
+        const termsCheckbox = document.getElementById('termsCheckbox'); // Get the new checkbox
+
+        // Function to update button disabled state based on checkbox
+        function updateButtonState() {
+          confirmButton.disabled = !termsCheckbox.checked;
+        }
+
+        // Initial state of the button on page load
+        updateButtonState();
+
+        // Add event listener to the checkbox to update button state
+        termsCheckbox.addEventListener('change', updateButtonState);
+
+        // Function to show the modal
+        function showModal() {
+          // Check form validity, including the new required checkbox
+          if (!bookingForm.checkValidity()) {
+            // If form is not valid, trigger native browser validation messages
+            bookingForm.reportValidity();
+            return;
+          }
+
+          modalTourTitle.textContent = "<%= tour.title %>";
+          modalCustomerName.textContent = customerNameInput.value;
+          modalCustomerEmail.textContent = customerEmailInput.value;
+          confirmationModal.classList.add('show');
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+          confirmationModal.classList.remove('show');
+        }
+
+        // Event listener for the main confirmation button
+        confirmButton.addEventListener('click', showModal);
+
+        // Event listener for the "Xác nhận" button inside the modal
+        modalConfirmBtn.addEventListener('click', function () {
+          // Re-check validity just in case, though it should be valid if modal showed
+          if (bookingForm.checkValidity()) {
+            bookingForm.submit(); // Submit the form
+            hideModal(); // Hide modal after submission (though page will reload)
+          } else {
+            // This case should ideally not be hit if showModal checks validity
+            bookingForm.reportValidity();
+            hideModal(); // Hide modal if invalid
+          }
+        });
+
+        // Event listener for the "Hủy" button inside the modal
+        modalCancelBtn.addEventListener('click', hideModal);
+
+        // Hide modal if clicking outside of it (optional)
+        confirmationModal.addEventListener('click', function (event) {
+          if (event.target === confirmationModal) {
+            hideModal();
+          }
+        });
+      });
+    </script>

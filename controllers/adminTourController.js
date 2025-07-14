@@ -20,13 +20,13 @@ exports.create = async (req, res) => {
     await tour.save();
     res.redirect("/admin/tours");
   } catch (err) {
-    let error = "Có lỗi xảy ra!";
+    let error = "An error occurred!";
     if (err.name === "ValidationError") {
       error = Object.values(err.errors)
         .map((e) => e.message)
         .join(". ");
     } else if (err.code === 11000) {
-      error = "Tiêu đề tour đã tồn tại!";
+      error = "Tour title already exists!";
     }
     res.status(400).render("admin/tours/new", {
       session: req.session,
@@ -51,15 +51,15 @@ exports.update = async (req, res) => {
     if (!tour) return res.redirect("/admin/tours");
     res.redirect("/admin/tours");
   } catch (err) {
-    let error = "Có lỗi xảy ra!";
+    let error = "An error occurred!";
     if (err.name === "ValidationError") {
       error = Object.values(err.errors)
         .map((e) => e.message)
         .join(". ");
     } else if (err.code === 11000) {
-      error = "Tiêu đề tour đã tồn tại!";
+      error = "Tour title already exists!";
     }
-    // Lấy lại dữ liệu tour cũ để render lại form
+    // Get the old tour data to render the form again
     const tour = await Tour.findById(req.params.id);
     res.status(400).render("admin/tours/edit", {
       tour: { ...tour.toObject(), ...req.body },
@@ -77,7 +77,7 @@ exports.delete = async (req, res) => {
     return res.render("admin/tours/index", {
       tours,
       session: req.session,
-      error: "Không thể xóa tour này vì đã có người đặt!",
+      error: "Cannot delete this tour because it has bookings!",
     });
   }
   await Tour.findByIdAndDelete(tourId);

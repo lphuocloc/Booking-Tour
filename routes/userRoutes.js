@@ -18,19 +18,15 @@ userRouter.get('/login', (req, res) => {
     res.render('auth/login');
 });
 // Show profile page (session only)
-userRouter.get('/profile', (req, res) => {
-    if (!req.session.user) return res.redirect('/users/login');
+userRouter.get('/profile', auth.requireLogin, (req, res) => {
     res.render('user/profile', { user: req.session.user, session: req.session });
 });
 // Show edit profile form (session only)
-userRouter.get('/profile/edit', (req, res) => {
-    if (!req.session.user) return res.redirect('/users/login');
+userRouter.get('/profile/edit', auth.requireLogin, (req, res) => {
     res.render('user/editProfile', { user: req.session.user, session: req.session });
 });
 // Handle profile update (session only)
-userRouter.post('/profile/edit', async (req, res) => {
-    if (!req.session.user) return res.redirect('/users/login');
-    // Call userController.updateProfile, but pass req.session.user._id
+userRouter.post('/profile/edit', auth.requireLogin, async (req, res) => {
     req.user = req.session.user;
     await userController.updateProfile(req, res);
 });
@@ -39,9 +35,8 @@ userRouter.get('/get',
     auth.requireRole('admin'),
     userController.getAllUsers);
 // API lấy lịch sử booking của user
-userRouter.get('/bookings/history', bookingController.getUserBookingHistory);
-userRouter.get('/profile/booking-history', (req, res) => {
-    if (!req.session.user) return res.redirect('/users/login');
+userRouter.get('/bookings/history', auth.requireLogin, bookingController.getUserBookingHistory);
+userRouter.get('/profile/booking-history', auth.requireLogin, (req, res) => {
     res.render('user/bookingHistory', { user: req.session.user, session: req.session });
 });
 module.exports = userRouter

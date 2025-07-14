@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/adminAuth');
+// const auth = require('../middleware/adminAuth');
 const adminTourController = require('../controllers/adminTourController');
 
-router.use(auth);
+// router.use(auth);
 
 router.get('/', adminTourController.list);
 router.get('/new', adminTourController.newForm);

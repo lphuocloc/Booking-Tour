@@ -1,15 +1,87 @@
 <%- include('../../partials/header') %>
-<h1>Manage Tours</h1>
-<p><a href="/admin/tours/new">New Tour</a></p>
-<ul>
-  <% tours.forEach(tour => { %>
-    <li>
-      <%= tour.title %> - $<%= tour.price %>
-      <a href="/admin/tours/<%= tour._id %>/edit">Edit</a>
-      <form action="/admin/tours/<%= tour._id %>/delete" method="POST" style="display:inline">
-        <button type="submit" onclick="return confirm('Delete?')">Delete</button>
-      </form>
-    </li>
-  <% }) %>
-</ul>
+<div class="container my-5">
+  <h1 class="mb-4 text-center display-5 fw-bold text-accent">Quản lý Tour</h1>
+  <div class="mb-3 text-end">
+    <a href="/admin/tours/new" class="btn btn-accent rounded-pill px-4"
+      >+ Thêm Tour mới</a
+    >
+  </div>
+  <% if (error) { %>
+  <div class="alert alert-danger text-center"><%= error %></div>
+  <% } %>
+  <div class="table-responsive">
+    <table
+      class="table table-bordered table-hover align-middle bg-white shadow-sm"
+    >
+      <thead class="table-light">
+        <tr class="text-center align-middle">
+          <th>Tiêu đề</th>
+          <th>Phụ đề</th>
+          <th>Địa điểm</th>
+          <th>Ngày</th>
+          <th>Giá</th>
+          <th>Số điểm dừng</th>
+          <th>Tham gia</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tours.forEach(tour => { %>
+        <tr>
+          <td><%= tour.title %></td>
+          <td><%= tour.subtitle || '' %></td>
+          <td><%= tour.location || '' %></td>
+          <td><%= tour.date || '' %></td>
+          <td class="text-end">$<%= tour.price %></td>
+          <td class="text-center"><%= tour.stops || '' %></td>
+          <td class="text-center"><%= tour.participants || '' %></td>
+          <td class="text-center">
+            <a
+              href="/admin/tours/<%= tour._id %>/edit"
+              class="btn btn-outline-primary btn-sm rounded-pill me-2"
+              >Sửa</a
+            >
+            <form
+              action="/admin/tours/<%= tour._id %>/delete"
+              method="POST"
+              style="display: inline"
+            >
+              <button
+                type="submit"
+                class="btn btn-outline-danger btn-sm rounded-pill"
+                onclick="return confirm('Xác nhận xóa tour này?')"
+              >
+                Xóa
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<style>
+  .text-accent {
+    color: #64b5f6 !important;
+  }
+  .btn-accent {
+    background-color: #64b5f6;
+    border-color: #64b5f6;
+    font-weight: bold;
+    color: #fff;
+  }
+  .btn-accent:hover {
+    background-color: #42a5f5;
+    border-color: #42a5f5;
+    color: #fff;
+  }
+  .table thead th {
+    vertical-align: middle;
+  }
+  .table td,
+  .table th {
+    vertical-align: middle;
+  }
+</style>
 <%- include('../../partials/footer') %>

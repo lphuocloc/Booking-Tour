@@ -1,213 +1,260 @@
-<%# views/index.ejs %>
-  <%# Giả định partials/header.ejs đã liên kết Bootstrap CSS và JS CDN %>
-    <%- include('../partials/header') %>
+<%# views/index.ejs %> <%# Giả định partials/header.ejs đã liên kết Bootstrap
+CSS và JS CDN %> <%- include('../partials/header') %>
 
-      <div class="container my-5">
-        <h1 class="text-center mb-5 display-4 fw-bold text-accent">Danh sách Tour Du lịch</h1>
-        <%# Changed text-primary to text-accent %>
-          <div class="row justify-content-center">
-            <% tours.forEach(tour=> { %>
-              <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
-                <div
-                  class="card tour-card h-100 shadow-lg border-0 rounded-lg overflow-hidden transform hover-scale-105 transition-all duration-300">
-                  <div class="tour-card-image-container position-relative">
-                    <% if (tour.image) { %>
-                      <img src="<%= tour.image %>" class="card-img-top img-fluid" alt="<%= tour.title %>"
-                        style="height: 250px; object-fit: cover;">
-                      <% } else { %>
-                        <img src="https://placehold.co/400x200/E0E0E0/666666?text=No+Image"
-                          class="card-img-top img-fluid" alt="Placeholder Image"
-                          style="height: 250px; object-fit: cover;">
-                        <% } %>
-                          <div class="tour-card-overlay"></div>
-                          <div
-                            class="tour-card-title-overlay position-absolute top-50 start-50 translate-middle text-white text-center">
-                            <h3 class="fw-bold mb-0 text-uppercase">
-                              <%= tour.title || 'Tour không tên' %>
-                            </h3>
-                            <p class="small text-uppercase mt-1">
-                              <%= tour.subtitle || 'Khám phá thiên nhiên' %>
-                            </p>
-                            <%# Added subtitle for image overlay %>
-                          </div>
-                  </div>
-                  <div class="card-body d-flex flex-column p-4">
-                    <p class="text-uppercase text-muted small mb-2">
+<div class="container my-5">
+  <h1 class="text-center mb-5 display-4 fw-bold text-accent">
+    Danh sách Tour Du lịch
+  </h1>
+  <%# Changed text-primary to text-accent %>
+  <div class="row justify-content-center">
+    <% tours.forEach(tour=> { %>
+    <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+      <div
+        class="card tour-card h-100 shadow-lg border-0 rounded-lg overflow-hidden transform hover-scale-105 transition-all duration-300"
+      >
+        <div class="tour-card-image-container position-relative">
+          <% if (tour.image) { %>
+          <img
+            src="<%= tour.image %>"
+            class="card-img-top img-fluid"
+            alt="<%= tour.title %>"
+            style="height: 250px; object-fit: cover"
+          />
+          <% } else { %>
+          <img
+            src="https://placehold.co/400x200/E0E0E0/666666?text=No+Image"
+            class="card-img-top img-fluid"
+            alt="Placeholder Image"
+            style="height: 250px; object-fit: cover"
+          />
+          <% } %>
+          <div class="tour-card-overlay"></div>
+          <div
+            class="tour-card-title-overlay position-absolute top-50 start-50 translate-middle text-white text-center"
+          >
+            <h3 class="fw-bold mb-0 text-uppercase">
+              <%= tour.title || 'Tour không tên' %>
+            </h3>
+            <p class="small text-uppercase mt-1">
+              <%= tour.subtitle || 'Khám phá thiên nhiên' %>
+            </p>
+            <%# Added subtitle for image overlay %>
+          </div>
+        </div>
+        <div class="card-body d-flex flex-column p-4">
+          <!-- <p class="text-uppercase text-muted small mb-2">
                       <%= tour.difficulty || 'Dễ' %>
                         <%= tour.duration || '5 ngày' %> Tour
-                    </p>
-                    <%# Combined difficulty and duration %>
-                      <p class="card-text text-secondary mb-3 flex-grow-1 tour-description-clamp">
-                        <%= tour.description || 'Chưa có mô tả cho tour này.' %>
-                      </p>
-                      <div class="row g-2 mb-3 border-bottom pb-3">
-                        <div class="col-6 d-flex align-items-center text-muted small">
-                          <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                              d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
-                          </svg>
-                          <%= tour.location || 'Chưa có thông tin' %>
-                        </div>
-                        <div class="col-6 d-flex align-items-center text-muted small">
-                          <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                              d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM12 3H4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM1 9.5V14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5H1z" />
-                          </svg>
-                          <%= tour.date || 'Tháng 4 2025' %>
-                            <%# Added tour.date %>
-                        </div>
-                        <div class="col-6 d-flex align-items-center text-muted small">
-                          <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                              d="M14 10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7zM3 3h10v7a1 1 0 0 0 1-1V3h-1V2H3v1H2v6a1 1 0 0 0 1 1V3z" />
-                          </svg>
-                          <%= tour.stops || '3 điểm dừng' %>
-                            <%# Added tour.stops %>
-                        </div>
-                        <div class="col-6 d-flex align-items-center text-muted small">
-                          <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                              d="M7 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H7zm-3.996-.908q.044.712.5 1.222V12h8a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3.004Zm-.995-1L1 10V1h14v9l-.005.005L13 10h-2l-.005.005L10 10V8l-.005.005L9 8V6l-.005.005L8 6V4l-.005.005L7 4V2l-.005.005L6 2V1H1v9Z" />
-                          </svg>
-                          <%= tour.participants || '25 người' %>
-                            <%# Added tour.participants %>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <div>
-                          <span class="h4 fw-bold text-accent mb-0">$<%= tour.price || 'Liên hệ' %></span>
-                          <%# Changed text-success to text-accent %>
-                            <span class="text-muted small"> per person</span>
-                            <div class="text-muted small mt-1">
-                              <%= tour.rating || '0' %> rating (<%= tour.reviews || '0' %>)
-                            </div>
-                        </div>
-                        <a href="/tours/<%= tour.id %>"
-                          class="btn btn-accent fw-semibold rounded-pill px-4 shadow-sm tour-details-btn">
-                          <%# Changed btn-success to btn-accent %>
-                            DETAILS
-                        </a>
-                      </div>
-                  </div>
-                </div>
-              </div>
-              <% }) %>
+                    </p> -->
+          <%# Combined difficulty and duration %>
+          <p
+            class="card-text text-secondary mb-3 flex-grow-1 tour-description-clamp"
+          >
+            <%= tour.description || 'Chưa có mô tả cho tour này.' %>
+          </p>
+          <div class="row g-2 mb-3 border-bottom pb-3">
+            <div class="col-6 d-flex align-items-center text-muted small">
+              <svg
+                class="me-1"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
+                />
+              </svg>
+              <%= tour.location || 'Chưa có thông tin' %>
+            </div>
+            <div class="col-6 d-flex align-items-center text-muted small">
+              <svg
+                class="me-1"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM12 3H4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM1 9.5V14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5H1z"
+                />
+              </svg>
+              <%= tour.date || 'Tháng 4 2025' %> <%# Added tour.date %>
+            </div>
+            <div class="col-6 d-flex align-items-center text-muted small">
+              <svg
+                class="me-1"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M14 10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7zM3 3h10v7a1 1 0 0 0 1-1V3h-1V2H3v1H2v6a1 1 0 0 0 1 1V3z"
+                />
+              </svg>
+              <%= tour.stops || '3 điểm dừng' %> <%# Added tour.stops %>
+            </div>
+            <div class="col-6 d-flex align-items-center text-muted small">
+              <svg
+                class="me-1"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M7 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H7zm-3.996-.908q.044.712.5 1.222V12h8a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3.004Zm-.995-1L1 10V1h14v9l-.005.005L13 10h-2l-.005.005L10 10V8l-.005.005L9 8V6l-.005.005L8 6V4l-.005.005L7 4V2l-.005.005L6 2V1H1v9Z"
+                />
+              </svg>
+              <%= tour.participants || '25 người' %> <%# Added tour.participants
+              %>
+            </div>
           </div>
+          <div
+            class="d-flex justify-content-between align-items-center mt-auto"
+          >
+            <div>
+              <span class="h4 fw-bold text-accent mb-0"
+                >$<%= tour.price || 'Liên hệ' %></span
+              >
+              <%# Changed text-success to text-accent %>
+              <span class="text-muted small"> per person</span>
+              <div class="text-muted small mt-1">
+                <%= tour.rating || '0' %> rating (<%= tour.reviews || '0' %>)
+              </div>
+            </div>
+            <a
+              href="/tours/<%= tour.id %>"
+              class="btn btn-accent fw-semibold rounded-pill px-4 shadow-sm tour-details-btn"
+            >
+              <%# Changed btn-success to btn-accent %> DETAILS
+            </a>
+          </div>
+        </div>
       </div>
+    </div>
+    <% }) %>
+  </div>
+</div>
 
-      <%- include('../partials/footer') %>
+<%- include('../partials/footer') %>
 
-        <style>
-          /* Custom accent color (Pastel Blue) */
-          .text-accent {
-            color: #64B5F6 !important;
-            /* A slightly more vibrant, but still soft blue */
-          }
+<style>
+  /* Custom accent color (Pastel Blue) */
+  .text-accent {
+    color: #64b5f6 !important;
+    /* A slightly more vibrant, but still soft blue */
+  }
 
-          /* Custom CSS based on the provided image */
-          .tour-card-image-container {
-            height: 250px;
-            overflow: hidden;
-          }
+  /* Custom CSS based on the provided image */
+  .tour-card-image-container {
+    height: 250px;
+    overflow: hidden;
+  }
 
-          .tour-card-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+  .tour-card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-          .tour-card-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(167, 217, 240, 0.7), rgba(100, 181, 246, 0.7));
-            /* Pastel Blue gradient */
-            opacity: 0.8;
-          }
+  .tour-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(167, 217, 240, 0.7),
+      rgba(100, 181, 246, 0.7)
+    );
+    /* Pastel Blue gradient */
+    opacity: 0.8;
+  }
 
-          .tour-card-title-overlay {
-            z-index: 10;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-            font-size: 2.5rem;
-            line-height: 1.1;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-          }
+  .tour-card-title-overlay {
+    z-index: 10;
+    color: #fff;
+    font-family: "Arial", sans-serif;
+    font-size: 2.5rem;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
 
-          .tour-card-title-overlay h3 {
-            font-size: 2.5rem;
-            margin-bottom: 0;
-          }
+  .tour-card-title-overlay h3 {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+  }
 
-          .tour-card-title-overlay p {
-            font-size: 1.5rem;
-            font-weight: normal;
-            margin-top: -0.5rem;
-          }
+  .tour-card-title-overlay p {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-top: -0.5rem;
+  }
 
-          .tour-card .card-body {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-          }
+  .tour-card .card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
 
-          .tour-card .card-title a {
-            font-size: 1.25rem;
-          }
+  .tour-card .card-title a {
+    font-size: 1.25rem;
+  }
 
-          .tour-card .card-text.text-secondary {
-            font-size: 0.95rem;
-            line-height: 1.4;
-          }
+  .tour-card .card-text.text-secondary {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
 
-          .tour-card .row.g-2 .col-6 {
-            font-size: 0.85rem;
-          }
+  .tour-card .row.g-2 .col-6 {
+    font-size: 0.85rem;
+  }
 
-          .tour-card .row.g-2 svg {
-            width: 1.1rem;
-            height: 1.1rem;
-            color: #6c757d;
-          }
+  .tour-card .row.g-2 svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: #6c757d;
+  }
 
-          .btn-accent {
-            /* New class for accent button */
-            background-color: #64B5F6;
-            /* Primary Pastel Blue */
-            border-color: #64B5F6;
-            font-weight: bold;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-          }
+  .btn-accent {
+    /* New class for accent button */
+    background-color: #64b5f6;
+    /* Primary Pastel Blue */
+    border-color: #64b5f6;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+  }
 
-          .btn-accent:hover {
-            background-color: #42A5F5;
-            /* Darker Pastel Blue on hover */
-            border-color: #42A5F5;
-          }
+  .btn-accent:hover {
+    background-color: #42a5f5;
+    /* Darker Pastel Blue on hover */
+    border-color: #42a5f5;
+  }
 
-          /* Existing custom CSS for hover effects */
-          .hover-primary-color:hover {
-            color: #64B5F6 !important;
-            /* Changed to accent color for hover */
-          }
+  /* Existing custom CSS for hover effects */
+  .hover-primary-color:hover {
+    color: #64b5f6 !important;
+    /* Changed to accent color for hover */
+  }
 
-          .hover-scale-105:hover {
-            transform: scale(1.03);
-          }
+  .hover-scale-105:hover {
+    transform: scale(1.03);
+  }
 
-          .transition-all {
-            transition: all 0.3s ease-in-out;
-          }
+  .transition-all {
+    transition: all 0.3s ease-in-out;
+  }
 
-          /* For description text clamping */
-          .tour-description-clamp {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        </style>
+  /* For description text clamping */
+  .tour-description-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

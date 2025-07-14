@@ -1,69 +1,146 @@
-<%# views/admin/editTour.ejs %>
-  <%# Giả định partials/header.ejs đã liên kết Bootstrap CSS và JS CDN %>
-    <%- include('../../partials/header') %>
+<%# views/admin/editTour.ejs %> <%# Giả định partials/header.ejs đã liên kết
+Bootstrap CSS và JS CDN %> <%- include('../../partials/header') %>
 
-      <div class="container my-5">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-8 col-lg-6">
-            <div class="card shadow-lg border-0 rounded-lg p-4">
-              <h1 class="text-center mb-4 display-5 fw-bold text-accent">Chỉnh sửa Tour</h1>
-              <form action="/admin/tours/<%= tour._id %>/update" method="POST">
-                <div class="mb-3">
-                  <label for="title" class="form-label fw-semibold text-dark">Tiêu đề Tour</label>
-                  <input type="text" class="form-control" id="title" name="title" value="<%= tour.title || '' %>"
-                    required />
-                </div>
-                <div class="mb-3">
-                  <label for="price" class="form-label fw-semibold text-dark">Giá</label>
-                  <input type="number" class="form-control" id="price" name="price" value="<%= tour.price || 0 %>"
-                    required step="0.01" />
-                </div>
-                <div class="mb-4">
-                  <label for="description" class="form-label fw-semibold text-dark">Mô tả</label>
-                  <textarea class="form-control" id="description" name="description"
-                    rows="5"><%= tour.description || '' %></textarea>
-                </div>
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-accent btn-lg rounded-pill shadow-sm">Cập nhật Tour</button>
-                </div>
-              </form>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-lg border-0 rounded-lg p-4">
+        <h1 class="text-center mb-4 display-5 fw-bold text-accent">
+          Chỉnh sửa Tour
+        </h1>
+        <% if (error) { %>
+        <div class="alert alert-danger text-center"><%= error %></div>
+        <% } %>
+        <form action="/admin/tours/<%= tour._id %>/update" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Tiêu đề</label>
+              <input
+                type="text"
+                class="form-control"
+                name="title"
+                required
+                value="<%= tour.title || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Phụ đề</label>
+              <input
+                type="text"
+                class="form-control"
+                name="subtitle"
+                value="<%= tour.subtitle || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Giá</label>
+              <input
+                type="number"
+                class="form-control"
+                name="price"
+                required
+                step="0.01"
+                value="<%= tour.price || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Địa điểm</label>
+              <input
+                type="text"
+                class="form-control"
+                name="location"
+                value="<%= tour.location || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Ngày</label>
+              <input
+                type="text"
+                class="form-control"
+                name="date"
+                value="<%= tour.date || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Ngày tiếp theo</label>
+              <input
+                type="text"
+                class="form-control"
+                name="nextDate"
+                value="<%= tour.nextDate || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Số điểm dừng</label>
+              <input
+                type="text"
+                class="form-control"
+                name="stops"
+                value="<%= tour.stops || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Số người tham gia</label>
+              <input
+                type="text"
+                class="form-control"
+                name="participants"
+                value="<%= tour.participants || '' %>"
+              />
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Mô tả</label>
+              <textarea
+                class="form-control"
+                name="description"
+                required
+                rows="3"
+              >
+<%= tour.description || '' %></textarea
+              >
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Ảnh đại diện (URL)</label>
+              <input
+                type="text"
+                class="form-control"
+                name="image"
+                value="<%= tour.image || '' %>"
+              />
             </div>
           </div>
-        </div>
+          <div class="d-grid gap-2 mt-4">
+            <button
+              type="submit"
+              class="btn btn-accent btn-lg rounded-pill shadow-sm"
+            >
+              Cập nhật Tour
+            </button>
+          </div>
+        </form>
       </div>
-
-      <%- include('../../partials/footer') %>
-
-        <style>
-          /* Custom accent color (Pastel Blue) - Đảm bảo màu này nhất quán với các trang khác */
-          .text-accent {
-            color: #64B5F6 !important;
-            /* A slightly more vibrant, but still soft blue */
-          }
-
-          .btn-accent {
-            background-color: #64B5F6;
-            /* Primary Pastel Blue */
-            border-color: #64B5F6;
-            font-weight: bold;
-          }
-
-          .btn-accent:hover {
-            background-color: #42A5F5;
-            /* Darker Pastel Blue on hover */
-            border-color: #42A5F5;
-          }
-
-          /* General card styling */
-          .card {
-            border-radius: 0.75rem;
-            /* Consistent border-radius */
-          }
-
-          /* Ensure form-control has a consistent look */
-          .form-control:focus {
-            border-color: #64B5F6;
-            box-shadow: 0 0 0 0.25rem rgba(100, 181, 246, 0.25);
-            /* Pastel blue focus ring */
-          }
-        </style>
+    </div>
+  </div>
+</div>
+<style>
+  .text-accent {
+    color: #64b5f6 !important;
+  }
+  .btn-accent {
+    background-color: #64b5f6;
+    border-color: #64b5f6;
+    font-weight: bold;
+  }
+  .btn-accent:hover {
+    background-color: #42a5f5;
+    border-color: #42a5f5;
+  }
+  .card {
+    border-radius: 0.75rem;
+  }
+  .form-control:focus {
+    border-color: #64b5f6;
+    box-shadow: 0 0 0 0.25rem rgba(100, 181, 246, 0.25);
+  }
+</style>
+<%- include('../../partials/footer') %>

@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <h1 class="mb-4 text-center display-5 fw-bold text-accent">
+    Danh sách tài khoản
+  </h1>
+  <div class="table-responsive">
+    <table
+      class="table table-bordered table-hover align-middle bg-white shadow-sm"
+    >
+      <thead class="table-light">
+        <tr class="text-center align-middle">
+          <th>Username</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.username %></td>
+          <td class="text-center"><%= user.role %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<style>
+  .text-accent {
+    color: #64b5f6 !important;
+  }
+  .table thead th {
+    vertical-align: middle;
+  }
+  .table td,
+  .table th {
+    vertical-align: middle;
+  }
+</style>
+<%- include('../partials/footer') %>

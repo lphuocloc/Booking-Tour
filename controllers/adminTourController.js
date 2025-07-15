@@ -3,7 +3,19 @@ const Booking = require("../models/booking");
 
 exports.list = async (req, res) => {
   const tours = await Tour.find();
-  res.render("admin/tours/index", { tours, session: req.session, error: null });
+  // Lấy số lượng booking cho từng tour
+  const Booking = require("../models/booking");
+  const toursWithCount = await Promise.all(
+    tours.map(async (tour) => {
+      const bookingsCount = await Booking.countDocuments({ tourId: tour._id });
+      return { ...tour.toObject(), bookingsCount };
+    })
+  );
+  res.render("admin/tours/index", {
+    tours: toursWithCount,
+    session: req.session,
+    error: null,
+  });
 };
 
 exports.newForm = (req, res) => {
@@ -107,4 +119,11 @@ exports.delete = async (req, res) => {
   }
   await Tour.findByIdAndDelete(tourId);
   res.redirect("/admin/tours");
+};
+
+exports.bookingsOfTour = async (req, res) => {
+  const tourId = req.params.id;
+  const Booking = require("../models/booking");
+  const bookings = await Booking.find({ tourId }).populate("tourId");
+  res.render("admin/tours/bookings", { bookings, session: req.session });
 };

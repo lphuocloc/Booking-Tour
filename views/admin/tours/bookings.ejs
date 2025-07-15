@@ -1,0 +1,44 @@
+<%- include('../../partials/header') %>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Tour Bookings</h2>
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Participants</th>
+        <th>Status</th>
+        <th>Booking Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (bookings.length === 0) { %>
+      <tr>
+        <td colspan="7" class="text-center text-muted">
+          No one has booked this tour yet.
+        </td>
+      </tr>
+      <% } else { %> <% bookings.forEach(function(b, idx) { %>
+      <tr>
+        <td><%= idx + 1 %></td>
+        <td><%= b.customerName %></td>
+        <td><%= b.customerEmail %></td>
+        <td><%= b.customerPhone %></td>
+        <td><%= b.participants %></td>
+        <td><%= b.status %></td>
+        <td>
+          <%= b.date ? (new Date(b.date).toLocaleDateString('en-GB')) : '' %>
+        </td>
+      </tr>
+      <% }) %> <% } %>
+    </tbody>
+  </table>
+  <div class="text-center mt-3">
+    <a href="/admin/tours" class="btn btn-outline-primary"
+      >Back to Tour Dashboard</a
+    >
+  </div>
+</div>
+<%- include('../../partials/footer') %>

@@ -14,7 +14,7 @@
     <% bookings.forEach(function(booking) { %>
     <tr>
       <td><%= booking._id %></td>
-      <td><%= booking.tourId ? booking.tourId.name : 'N/A' %></td>
+      <td><%= booking.tourId ? booking.tourId.title : 'N/A' %></td>
       <td><%= booking.userId ? booking.userId : 'N/A' %></td>
       <td><%= booking.status %></td>
       <td><%= booking.createdAt %></td>

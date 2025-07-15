@@ -27,7 +27,7 @@
       <tbody>
         <% tours.forEach(function(tour) { %>
         <tr>
-          <td><%= tour.name %></td>
+          <td><%= tour.title %></td>
           <td>
             <%= tour.date ? (new Date(tour.date).toLocaleDateString('en-GB')) :
             '' %>

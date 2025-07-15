@@ -7,5 +7,6 @@ router.use(auth.requireAdmin);
 
 router.get("/", adminController.dashboard);
 router.get("/accounts", adminController.accountList);
+router.get("/accounts/:id", adminController.accountDetail);
 
 module.exports = router;

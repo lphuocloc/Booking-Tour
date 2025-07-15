@@ -1,95 +1,141 @@
 <%- include('../../partials/header') %>
-  <div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <div class="card shadow-lg border-0 rounded-lg p-4">
-          <h1 class="text-center mb-4 display-5 fw-bold text-accent">
-            Create New Tour
-          </h1>
-          <% if (error) { %>
-            <div class="alert alert-danger text-center">
-              <%= error %>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-lg border-0 rounded-lg p-4">
+        <h1 class="text-center mb-4 display-5 fw-bold text-accent">
+          Create New Tour
+        </h1>
+        <% if (error) { %>
+        <div class="alert alert-danger text-center"><%= error %></div>
+        <% } %>
+        <form action="/admin/tours" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                name="title"
+                required
+                value="<%= form.title || '' %>"
+              />
             </div>
-            <% } %>
-              <form action="/admin/tours" method="POST">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Title</label>
-                    <input type="text" class="form-control" name="title" required value="<%= form.title || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Subtitle</label>
-                    <input type="text" class="form-control" name="subtitle" value="<%= form.subtitle || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Price</label>
-                    <input type="number" class="form-control" name="price" required step="0.01"
-                      value="<%= form.price || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Location</label>
-                    <input type="text" class="form-control" name="location" value="<%= form.location || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Date</label>
-                    <input type="text" class="form-control" name="date" value="<%= form.date || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Ngày kết thúc</label>
-                    <input type="text" class="form-control" name="nextDate" value="<%= form.nextDate || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Số điểm dừng</label>
-                    <input type="text" class="form-control" name="stops" value="<%= form.stops || '' %>" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Số người tham gia</label>
-                    <input type="text" class="form-control" name="participants"
-                      value="<%= form.participants || '' %>" />
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Mô tả</label>
-                    <textarea class="form-control" name="description" required rows="3">
-<%= form.description || '' %></textarea>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Ảnh đại diện (URL)</label>
-                    <input type="text" class="form-control" name="image" value="<%= form.image || '' %>" />
-                  </div>
-                </div>
-                <div class="d-grid gap-2 mt-4">
-                  <button type="submit" class="btn btn-accent btn-lg rounded-pill shadow-sm">
-                    Tạo Tour
-                  </button>
-                </div>
-              </form>
-        </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Subtitle</label>
+              <input
+                type="text"
+                class="form-control"
+                name="subtitle"
+                value="<%= form.subtitle || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                name="price"
+                required
+                step="0.01"
+                value="<%= form.price || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Location</label>
+              <input
+                type="text"
+                class="form-control"
+                name="location"
+                value="<%= form.location || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Date</label>
+              <input
+                type="text"
+                class="form-control"
+                name="date"
+                value="<%= form.date || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Number of Stops</label>
+              <input
+                type="text"
+                class="form-control"
+                name="stops"
+                value="<%= form.stops || '' %>"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold"
+                >Number of Participants</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="participants"
+                value="<%= form.participants || '' %>"
+              />
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea
+                class="form-control"
+                name="description"
+                required
+                rows="3"
+              >
+<%= form.description || '' %></textarea
+              >
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Thumbnail (URL)</label>
+              <input
+                type="text"
+                class="form-control"
+                name="image"
+                value="<%= form.image || '' %>"
+              />
+            </div>
+          </div>
+          <div class="d-grid gap-2 mt-4">
+            <button
+              type="submit"
+              class="btn btn-accent btn-lg rounded-pill shadow-sm"
+            >
+              Tạo Tour
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  <style>
-    .text-accent {
-      color: #64b5f6 !important;
-    }
+</div>
+<style>
+  .text-accent {
+    color: #64b5f6 !important;
+  }
 
-    .btn-accent {
-      background-color: #64b5f6;
-      border-color: #64b5f6;
-      font-weight: bold;
-    }
+  .btn-accent {
+    background-color: #64b5f6;
+    border-color: #64b5f6;
+    font-weight: bold;
+  }
 
-    .btn-accent:hover {
-      background-color: #42a5f5;
-      border-color: #42a5f5;
-    }
+  .btn-accent:hover {
+    background-color: #42a5f5;
+    border-color: #42a5f5;
+  }
 
-    .card {
-      border-radius: 0.75rem;
-    }
+  .card {
+    border-radius: 0.75rem;
+  }
 
-    .form-control:focus {
-      border-color: #64b5f6;
-      box-shadow: 0 0 0 0.25rem rgba(100, 181, 246, 0.25);
-    }
-  </style>
-  <%- include('../../partials/footer') %>
+  .form-control:focus {
+    border-color: #64b5f6;
+    box-shadow: 0 0 0 0.25rem rgba(100, 181, 246, 0.25);
+  }
+</style>
+<%- include('../../partials/footer') %>

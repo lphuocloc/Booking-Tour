@@ -16,6 +16,17 @@ exports.newForm = (req, res) => {
 
 exports.create = async (req, res) => {
   try {
+    // Validate start date
+    const startDate = new Date(req.body.date);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (isNaN(startDate.getTime()) || startDate < now) {
+      return res.status(400).render("admin/tours/new", {
+        session: req.session,
+        error: "Start date must not be in the past!",
+        form: req.body,
+      });
+    }
     const tour = new Tour(req.body);
     await tour.save();
     res.redirect("/admin/tours");
@@ -44,6 +55,18 @@ exports.editForm = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
+    // Validate start date
+    const startDate = new Date(req.body.date);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (isNaN(startDate.getTime()) || startDate < now) {
+      const tour = await Tour.findById(req.params.id);
+      return res.status(400).render("admin/tours/edit", {
+        tour: { ...tour.toObject(), ...req.body },
+        session: req.session,
+        error: "Start date must not be in the past!",
+      });
+    }
     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
       runValidators: true,
       new: true,
@@ -71,13 +94,15 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const tourId = req.params.id;
-  const bookingCount = await Booking.countDocuments({ tourId });
+  // Chỉ đếm booking thành công (status: 'Paid')
+  const bookingCount = await Booking.countDocuments({ tourId, status: "Paid" });
   if (bookingCount > 0) {
     const tours = await Tour.find();
     return res.render("admin/tours/index", {
       tours,
       session: req.session,
-      error: "Cannot delete this tour because it has bookings!",
+      error:
+        "This tour currently has successful bookings and cannot be deleted.",
     });
   }
   await Tour.findByIdAndDelete(tourId);

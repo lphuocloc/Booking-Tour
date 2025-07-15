@@ -1,23 +1,27 @@
 <%- include('../partials/header') %>
 <div class="container my-5">
-  <h1 class="mb-4 text-center display-5 fw-bold text-accent">
-    Danh sách tài khoản
-  </h1>
+  <h1 class="mb-4 text-center display-5 fw-bold text-accent">Account List</h1>
   <div class="table-responsive">
     <table
       class="table table-bordered table-hover align-middle bg-white shadow-sm"
     >
       <thead class="table-light">
-        <tr class="text-center align-middle">
-          <th>Username</th>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
           <th>Role</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% users.forEach(user => { %>
+        <% users.forEach(function(user) { %>
         <tr>
-          <td><%= user.username %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
           <td class="text-center"><%= user.role %></td>
+          <td>
+            <a href="/admin/accounts/<%= user._id %>">View</a>
+          </td>
         </tr>
         <% }) %>
       </tbody>
